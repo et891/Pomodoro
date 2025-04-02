@@ -1,8 +1,13 @@
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, Session
+from typing import Any
 
-engine = create_engine("postgresql+psycopg2://postgres:password@localhost:5432/pomodoro")
-SessionLocal = sessionmaker(bind=engine)  # 👈 лучше назвать SessionLocal по стандарту
+from sqlalchemy.orm import  DeclarativeBase, declared_attr
 
-def get_db_session() -> Session:
-    return SessionLocal()
+class Base(DeclarativeBase):
+    id: Any
+    __name__ = str
+
+    __allow_unmapped__ = True
+
+    @declared_attr
+    def __tablename__(self) -> str:
+        return self.__name__.lower()
