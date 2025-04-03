@@ -7,11 +7,10 @@ from sqlalchemy import insert, select
 class UserRepository:
     db_session: Session
 
-    def create_user(self, username: str, password: str, access_token: str) -> UserProfile:
+    def create_user(self, username: str, password: str) -> UserProfile:
         query = insert(UserProfile).values(
             username=username,
-            password=password,
-            access_token=access_token
+            password=password
         ).returning(UserProfile.id)
 
         result = self.db_session.execute(query)
